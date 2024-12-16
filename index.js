@@ -10,30 +10,44 @@ const auctionItem = require("./models/auctionItem");
 
 //create asynchronous function that inserts data into the data base
 const seedData = async () => {
-  await connectDB();
-  const items = [
-    {
-      title: "Antique Vase",
-      description: "A beautiful antique vase",
-      start_price: 50,
-      reserve_price: 100,
-    },
-    {
-      title: "Vintage T-shirt",
-      description: "Single stitch 1980's vintage band tee",
-      start_price: 20,
-      reserve_price: 30,
-    },
-    {
-      title: "Painting",
-      description: "An original oil painting",
-      start_price: 300,
-      reserve_price: 350,
-    },
-  ];
-  await auctionItem.insertMany(items);
-  console.log("Data seeded successfully!");
-  process.exit();
+  try {
+    await connectDB();
+    const items = [
+      {
+        title: "Antique Vase",
+        description: "A beautiful antique vase",
+        start_price: 50,
+        reserve_price: 100,
+      },
+      {
+        title: "Vintage T-shirt",
+        description: "Single stitch 1980's vintage band tee",
+        start_price: 20,
+        reserve_price: 30,
+      },
+      {
+        title: "Painting",
+        description: "An original oil painting",
+        start_price: 300,
+        reserve_price: 350,
+      },
+    ];
+    
+    const result = await auctionItem.insertMany(items);
+    console.log(`Data seeded successfully! ${result.length} items inserted`);
+    
+    // Verify the data was inserted
+    const count = await auctionItem.countDocuments();
+    console.log(`Total documents in collection: ${count}`);
+    
+    // Give MongoDB a moment to finish writing
+    setTimeout(() => {
+      process.exit(0);
+    }, 1000);
+  } catch (error) {
+    console.error("Error seeding data:", error);
+    process.exit(1);
+  }
 };
 
 //create asynchronous function that deletes all auction data from the data base

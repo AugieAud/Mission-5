@@ -10,4 +10,8 @@ const auctionItemSchema = new mongoose.Schema({
   reserve_price: { type: Number, required: true },
 });
 
-module.exports = mongoose.model("AuctionItem", auctionItemSchema);
+module.exports = mongoose.model(
+  "auctionItem",
+  auctionItemSchema,
+  "auction_items"
+);

@@ -8,10 +8,7 @@ const connectDB = async () => {
   //attempt to connect to the database
   //mongoose.connect is an inbuilt mongoose function that connects to the database
   try {
-    await mongoose.connect("mongodb://localhost:27017/your_database_name", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect("mongodb://localhost:27017/trade_me");
     console.log("MongoDB connected");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error.message);
