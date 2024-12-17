@@ -32,15 +32,11 @@ const seedData = async () => {
         reserve_price: 350,
       },
     ];
-    
+
     const result = await auctionItem.insertMany(items);
     console.log(`Data seeded successfully! ${result.length} items inserted`);
-    
-    // Verify the data was inserted
-    const count = await auctionItem.countDocuments();
-    console.log(`Total documents in collection: ${count}`);
-    
-    // Give MongoDB a moment to finish writing
+
+    // Give MongoDB a moment to finish writing before exiting the process
     setTimeout(() => {
       process.exit(0);
     }, 1000);
@@ -58,8 +54,38 @@ const deleteData = async () => {
   process.exit();
 };
 
+//create asynchronous function that deletes one auction item from the data base
+const deleteItem = async (argv) => {
+  try {
+    await connectDB();
+    const result = await auctionItem.deleteOne({ title: argv.title });
+
+    if (result.deletedCount > 0) {
+      console.log(`Item "${argv.title}" deleted successfully!`);
+    } else {
+      console.log(`Item "${argv.title}" not found!`);
+    }
+    process.exit();
+  } catch (err) {
+    console.log("Error deleting item:", err);
+    process.exit(1);
+  }
+};
+
 //define yargs commands to use in the command line, seed will call the seedData function, delete will call the deleteData function, help will display available commands
 yargs
   .command("seed", "Seed data into the database", {}, seedData)
   .command("delete", "Delete all data from the database", {}, deleteData)
+  .command(
+    "deleteItem",
+    "Delete selected item from the database",
+    {
+      title: {
+        description: "Title of the item to delete",
+        type: "string",
+        demandOption: true
+      }
+    },
+    deleteItem
+  )
   .help().argv;
