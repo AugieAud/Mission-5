@@ -27,11 +27,12 @@ app.get("/api/auction-items", async (req, res) => {
   }
 });
 
+//route to search for specific auction item using a keyword, $regex is a mongoDB query operator that allows us to search for a specific keyword in the title field of the auction items. $options deals with case sensitivity and white space etc.
 app.get("/api/auction-items/search", async (req, res) => {
   try {
     await connectDB();
     const { keyword } = req.query;
-    
+
     if (!keyword) {
       const allItems = await auctionItem.find({});
       console.log("No keyword provided. All items:", allItems);
@@ -50,12 +51,13 @@ app.get("/api/auction-items/search", async (req, res) => {
   }
 });
 
-// Catch-all route for undefined routes
+// Catch-all route for undefined routes, error handeling
 app.use((req, res) => {
   console.log("404 hit for URL:", req.url);
   res.status(404).json({ message: "Route not found" });
 });
 
+// start server and log available routes
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log("Available routes:");
