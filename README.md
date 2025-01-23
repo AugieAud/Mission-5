@@ -18,7 +18,7 @@ This project provides a command-line interface (CLI) tool to seed data into a lo
 ## Setup Instructions
 
 ```bash
-git clone https://github.com/AugieAud/cli-tool-mongodb.git
+git clone [https://github.com/AugieAud/cli-tool-mongodb.git](https://github.com/AugieAud/cli-tool-mongodb.git)
 cd cli-tool-mongodb
 npm install
 npm run seed
